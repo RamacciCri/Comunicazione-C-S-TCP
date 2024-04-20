@@ -1,13 +1,7 @@
 package c_s_comunicazioneunicast.Server;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.net.BindException;
-import java.net.SocketException;
-
+import java.io.*;
+import java.net.*;
 
 public class Server {
     private ServerSocket serverSocket;
@@ -50,10 +44,26 @@ public class Server {
     }
     
     public void scrivi() {
-        
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String messaggio = in.readLine();
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String messaggioMaiuscolo = messaggio.toUpperCase();
+            out.println(messaggioMaiuscolo); // Invia la risposta al client
+            out.flush();
+        } catch (IOException ex) {
+            System.err.println("Errore durante l'invio del messaggio: " + ex.getMessage());
+        }
     }
     
     public void leggi() {
+        try{
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        String messaggio = in.readLine(); // Legge il messaggio dal client
+        System.out.println("Messaggio ricevuto dal client: " + messaggio);
+        } catch (IOException ex) {
+            System.err.println("Errore durante l'invio del messaggio: " + ex.getMessage());
+        }
         
     }
     
